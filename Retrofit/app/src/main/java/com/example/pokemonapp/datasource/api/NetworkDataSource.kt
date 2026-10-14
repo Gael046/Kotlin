@@ -11,7 +11,7 @@ import kotlin.getValue
 
 object NetworkDataSource {
 
-    private const val BASE_URL = "https://api.magicthegathering.io/v1/"
+    private const val BASE_URL = "https://api.tcgdex.net/v2/fr/"
 
     val interceptor = HttpLoggingInterceptor().apply {
         this.level = HttpLoggingInterceptor.Level.BODY

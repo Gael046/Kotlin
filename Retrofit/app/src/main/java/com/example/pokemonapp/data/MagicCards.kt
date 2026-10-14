@@ -8,10 +8,20 @@ data class MagicCards(@SerialName("cards") val cardList: List<MagicCard>)
 
 @Serializable
 data class MagicCard(
+    val id: String,
+    val image: String?,
+    val localId: String,
     val name: String,
-    val manaCost: String? = null,
-    var colors: ArrayList<String> = arrayListOf(),
-    var type: String? = null,
-    var rarity: String? = null
+    val pricing: Pricing
 )
 
+@Serializable
+data class Pricing(
+    val cardmarket: CardMarket?
+)
+
+@Serializable
+data class CardMarket(
+    val avg: Double?,
+    val unit: String?
+)
