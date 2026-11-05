@@ -9,18 +9,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.pokemonapp.app.AppButton
 import com.example.pokemonapp.datasource.api.NetworkDataSource
+import com.example.pokemonapp.presentation.viewmodels.HomeViewModel
 import com.example.pokemonapp.ui.theme.Margin
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun HomePage() {
+fun HomePage(
+    homeViewModel: HomeViewModel = viewModel()
+) {
+
+    val uiState = homeViewModel.uiState.collectAsStateWithLifecycle()
 
     //TODO to test api
     LaunchedEffect(true) {
-        val response = NetworkDataSource.magicCardsService.getCards()
-        println(response)
+//        homeViewModel.fetchCards()
     }
+
+    if (uiState.value.isLoading) {
+        Text(
+            text = "Chargement en  cours"
+        )
+    } else {
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -28,14 +41,15 @@ fun HomePage() {
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val count = uiState.value.magicCards.count()
             Text(
-                text = "Hello HomePage!",
+                text = "Nombre de carte $count"
             )
 
             AppButton(
                 text = "Bonjour Clic ", maxWidth = true,
             ) {
-
+                homeViewModel.fetchCards()
             }
         }
 
@@ -46,10 +60,11 @@ fun HomePage() {
             padding = PaddingValues(
                 horizontal = Margin.s,
                 vertical = Margin.xl
-                )
-            ) {
+            )
+        ) {
 
         }
+    }
 
     }
 }
